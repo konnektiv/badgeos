@@ -461,7 +461,23 @@ function badgeos_get_step_activity_count( $user_id = 0, $step_id = 0 ) {
 			$activities = count( $achievements );
 			break;
 		case 'any-achievement' :
-			$activities = badgeos_get_user_trigger_count( $user_id, 'badgeos_unlock_' . $step_requirements['achievement_type'] );
+
+			// Get our parent achievement
+			$parent_achievement = badgeos_get_parent_of_achievement( $step_id );
+
+			// If the user has any interaction with this achievement, only get activity since that date
+			if ( $parent_achievement && $date = badgeos_achievement_last_user_activity( $parent_achievement->ID, $user_id ) )
+				$since = $date;
+			else
+				$since = 0;
+
+			// Get our achievement activity
+			$achievements = badgeos_get_user_achievements( array(
+				'user_id'          => absint( $user_id ),
+				'achievement_type' => $step_requirements['achievement_type'],
+				'since'            => $since
+			) );
+			$activities = count( $achievements );
 			break;
 		case 'all-achievements' :
 			$activities = badgeos_get_user_trigger_count( $user_id, 'badgeos_unlock_all_' . $step_requirements['achievement_type'] );
