@@ -157,6 +157,7 @@ function badgeos_user_profile_data( $user = null ) {
 			echo '<table class="widefat badgeos-table">';
 			echo '<thead><tr>';
 				echo '<th>'. __( 'Image', 'badgeos' ) .'</th>';
+				echo '<th>'. __( 'Date', 'badgeos' ) .'</th>';
 				echo '<th>'. __( 'Name', 'badgeos' ) .'</th>';
 				echo '<th>'. __( 'Action', 'badgeos' ) .'</th>';
 			echo '</tr></thead>';
@@ -172,6 +173,7 @@ function badgeos_user_profile_data( $user = null ) {
 
 				echo '<tr>';
 					echo '<td>'. badgeos_get_achievement_post_thumbnail( $achievement->ID, array( 50, 50 ) ) .'</td>';
+					echo '<td title="'. $achievement->date_earned .'">' . date('Y-m-d H:i:s', $achievement->date_earned) . ' </td>';
 					echo '<td>', edit_post_link( get_the_title( $achievement->ID ), '', '', $achievement->ID ), ' </td>';
 					echo '<td> <span class="delete"><a class="error" href="'.esc_url( wp_nonce_url( $revoke_url, 'badgeos_revoke_achievement' ) ).'">' . __( 'Revoke Award', 'badgeos' ) . '</a></span></td>';
 				echo '</tr>';
