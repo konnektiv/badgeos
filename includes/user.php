@@ -304,10 +304,12 @@ function badgeos_user_profile_data( $user = null ) {
 
 			echo '<table class="widefat badgeos-table">';
 			echo '<thead><tr>';
+
 			if ( current_user_can( badgeos_get_manager_capability() ) ) {
 				echo '<th width="5%"><input type="checkbox" id="badgeos_ach_check_all" name="badgeos_ach_check_all" /></th>';
 			}
 			echo '<th>'. __( 'Image', 'badgeos' ) .'</th>';
+			echo '<th>'. __( 'Date', 'badgeos' ) .'</th>';
 			echo '<th>'. __( 'Name', 'badgeos' ) .'</th>';
 			echo '<th>'. __( 'Points', 'badgeos' ) .'</th>';
 			do_action( 'badgeos_profile_achivement_add_column_heading' );
@@ -333,6 +335,7 @@ function badgeos_user_profile_data( $user = null ) {
 					$badge_image = apply_filters( 'badgeos_profile_achivement_image', $badge_image, $achievement  );
 					
                     echo '<td width="20%">'.$badge_image.'</td>';
+	                echo '<td title="'. $achievement->date_earned .'">' . $achievement->date_earned . ' </td>';
                     echo '<td width="55%">';
                     $achievement_title = get_the_title( $achievement->ID );
                     if( empty( $achievement_title ) ) {
