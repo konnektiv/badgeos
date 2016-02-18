@@ -178,10 +178,11 @@ function badgeos_user_profile_data( $user = null ) {
 					'since'			 => absint( $achievement->date_earned ),
 				) );
 
+				$post_type =  get_post_type_object( $achievement->post_type );
 				echo '<tr>';
 					echo '<td>'. badgeos_get_achievement_post_thumbnail( $achievement->ID, array( 50, 50 ) ) .'</td>';
 					echo '<td title="'. $achievement->date_earned .'">' . date('Y-m-d H:i:s', $achievement->date_earned) . ' </td>';
-					echo '<td>', edit_post_link( get_the_title( $achievement->ID ), '', '', $achievement->ID ), ' </td>';
+					echo '<td>', $post_type->labels->singular_name, ": ", edit_post_link( get_the_title( $achievement->ID ), '', '', $achievement->ID ), ' </td>';
 					echo '<td> <span class="delete"><a class="error" href="'.esc_url( wp_nonce_url( $revoke_url, 'badgeos_revoke_achievement' ) ).'">' . __( 'Revoke Award', 'badgeos' ) . '</a> | <span class="delete"><a class="error" href="'.esc_url( wp_nonce_url( $revoke_since_url, 'badgeos_revoke_achievements_since' ) ).'">' . __( 'Revoke all Awards since this', 'badgeos' ) . '</a></span></td>';
 				echo '</tr>';
 
