@@ -222,6 +222,43 @@ function badgeos_revoke_achievement_from_user( $achievement_id = 0, $user_id = 0
 }
 
 /**
+ * Revoke achievements from a user since a timestamp
+ *
+ * @since  1.4.7
+ * @param  integer $achievement_id The given achievement's post ID
+ * @param  integer $user_id        The given user's ID
+ * @param  integer $since          The given timestamp
+ * @return void
+ */
+function badgeos_revoke_achievements_from_user_since( $achievement_id = 0, $user_id = 0, $since = 0 ) {
+
+	// user ID must be specified
+	if ( ! $user_id )
+		return;
+
+	// Grab the user's earned achievements
+	$earned_achievements = badgeos_get_user_achievements( array( 'user_id' => $user_id ) );
+
+	if ( is_array( $earned_achievements) && ! empty( $earned_achievements ) ) {
+
+		foreach ( $earned_achievements as $key => $achievement ) {
+
+			// Drop any achievements earned before our since timestamp
+			if ( $achievement->ID == $achievement_id && absint($since) <= $achievement->date_earned ) {
+				unset( $earned_achievements[$key] );
+			}
+
+		}
+
+		// Re-key our array
+		$earned_achievements = array_values( $earned_achievements );
+
+		// Update user's earned achievements
+		badgeos_update_user_achievements( array( 'user_id' => $user_id, 'all_achievements' => $earned_achievements ) );
+	}
+}
+
+/**
  * Award additional achievements to user
  *
  * @since  1.0.0

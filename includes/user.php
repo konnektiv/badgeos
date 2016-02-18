@@ -171,11 +171,18 @@ function badgeos_user_profile_data( $user = null ) {
 					'achievement_id' => absint( $achievement->ID ),
 				) );
 
+				$revoke_since_url = add_query_arg( array(
+					'action'         => 'revoke_since',
+					'user_id'        => absint( $user->ID ),
+					'achievement_id' => absint( $achievement->ID ),
+					'since'			 => absint( $achievement->date_earned ),
+				) );
+
 				echo '<tr>';
 					echo '<td>'. badgeos_get_achievement_post_thumbnail( $achievement->ID, array( 50, 50 ) ) .'</td>';
 					echo '<td title="'. $achievement->date_earned .'">' . date('Y-m-d H:i:s', $achievement->date_earned) . ' </td>';
 					echo '<td>', edit_post_link( get_the_title( $achievement->ID ), '', '', $achievement->ID ), ' </td>';
-					echo '<td> <span class="delete"><a class="error" href="'.esc_url( wp_nonce_url( $revoke_url, 'badgeos_revoke_achievement' ) ).'">' . __( 'Revoke Award', 'badgeos' ) . '</a></span></td>';
+					echo '<td> <span class="delete"><a class="error" href="'.esc_url( wp_nonce_url( $revoke_url, 'badgeos_revoke_achievement' ) ).'">' . __( 'Revoke Award', 'badgeos' ) . '</a> | <span class="delete"><a class="error" href="'.esc_url( wp_nonce_url( $revoke_since_url, 'badgeos_revoke_achievements_since' ) ).'">' . __( 'Revoke all Awards since this', 'badgeos' ) . '</a></span></td>';
 				echo '</tr>';
 
 				$achievement_ids[] = $achievement->ID;
@@ -310,7 +317,6 @@ function badgeos_profile_award_achievement( $user = null, $achievement_ids = arr
 										?>
 										<span class="delete"><a class="error" href="<?php echo esc_url( wp_nonce_url( $revoke_url, 'badgeos_revoke_achievement' ) ); ?>"><?php _e( 'Revoke Award', 'badgeos' ); ?></a></span>
 									<?php endif; ?>
-
 								</td>
 							</tr>
 						<?php endwhile; ?>
@@ -376,6 +382,21 @@ function badgeos_process_user_data() {
 
 			// Revoke the achievement
 			badgeos_revoke_achievement_from_user( absint( $_GET['achievement_id'] ), absint( $_GET['user_id'] ) );
+
+			// Redirect back to the user editor
+			wp_redirect( add_query_arg( 'user_id', absint( $_GET['user_id'] ), admin_url( 'user-edit.php' ) ) );
+			exit();
+
+		}
+
+		// Process revoking achievement from a user since a timestamp
+		if ( isset( $_GET['action'] ) && 'revoke_since' == $_GET['action'] && isset( $_GET['user_id'] ) && isset( $_GET['achievement_id'] ) && isset( $_GET['since'] ) ) {
+
+			// Verify our nonce
+			check_admin_referer( 'badgeos_revoke_achievements_since' );
+
+			// Revoke the achievement
+			badgeos_revoke_achievements_from_user_since( absint( $_GET['achievement_id'] ), absint( $_GET['user_id'] ),  absint( $_GET['since'] ) );
 
 			// Redirect back to the user editor
 			wp_redirect( add_query_arg( 'user_id', absint( $_GET['user_id'] ), admin_url( 'user-edit.php' ) ) );
