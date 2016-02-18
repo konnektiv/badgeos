@@ -321,6 +321,7 @@ function badgeos_user_profile_data( $user = null ) {
 			foreach ( $achievements as $achievement ) {
 
                 if( $achievement->post_type != 'step' ) {
+	                $post_type =  get_post_type_object( $achievement->post_type );
                     $achievement_exists = true;
                     
 					echo '<tr>';
@@ -346,9 +347,9 @@ function badgeos_user_profile_data( $user = null ) {
 						}
                     } else {
 						if ( current_user_can( badgeos_get_manager_capability() ) ) {
-							$achievement_title = edit_post_link( $achievement_title, '', '', $achievement->ID );
+							echo $post_type->labels->singular_name, ": ", edit_post_link( get_the_title( $achievement->ID ), '', '', $achievement->ID );
 						} else {
-							echo '<a class="post-edit-link" href="'.get_permalink($achievement->ID).'">'. esc_html( $achievement->achievement_title ) .'</a>';
+							echo '<a class="post-edit-link" href="'.get_permalink($achievement->ID).'">'. $post_type->labels->singular_name . ": "  . esc_html( $achievement->achievement_title ) .'</a>';
 						}
                     }
                     echo '</td>';
