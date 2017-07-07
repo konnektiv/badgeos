@@ -476,7 +476,9 @@ class BadgeOS {
 			'cancel'          => __( 'Cancel', 'badgeos' ),
 			'share'           => __( 'Share on Credly!', 'badgeos' ),
 			'localized_error' => __( 'Error:', 'badgeos' ),
-			'errormessage'    => __( 'Error: Timed out', 'badgeos' )
+			'errormessage'    => __( 'Error: Timed out', 'badgeos' ),
+			'show_details'	  => __( 'Show Details', 'badgeos' ),
+			'hide_details'	  => __( 'Hide Details', 'badgeos' )
 		);
 		wp_localize_script( 'badgeos-achievements', 'BadgeosCredlyData', $data );
 
