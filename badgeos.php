@@ -45,14 +45,12 @@ class BadgeOS {
 
         $this->award_ids  = array();
 
-		// Load translations
-		load_plugin_textdomain( 'badgeos', false, 'badgeos/languages' );
-
 		// Setup our activation and deactivation hooks
 		register_activation_hook( __FILE__, array( $this, 'activate' ) );
 		register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
 
 		// Hook in all our important pieces
+		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 		add_action( 'plugins_loaded', array( $this, 'includes' ) );
 		add_action( 'init', array( $this, 'register_scripts_and_styles' ) );
 		add_action( 'init', array( $this, 'include_cmb' ), 999 );
@@ -161,6 +159,14 @@ class BadgeOS {
 
 			update_option( 'badgeos_settings', $badgeos_settings );
 		}
+	}
+
+	/**
+	 * Load translations.
+	 */
+	function load_textdomain() {
+		// Load translations
+		load_plugin_textdomain( 'badgeos', false, basename( dirname( __FILE__ ) ) . '/languages' );
 	}
 
 	/**
