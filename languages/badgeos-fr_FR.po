@@ -106,7 +106,7 @@ msgstr "Montrer Détails"
 
 #: badgeos.php:292
 msgid "Hide Details"
-msgstr ""
+msgstr "Cacher Détails"
 
 # @ badgeos
 #: includes/points-functions.php:86
