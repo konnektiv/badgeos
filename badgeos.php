@@ -41,14 +41,12 @@ class BadgeOS {
 		$this->directory_path = plugin_dir_path( __FILE__ );
 		$this->directory_url  = plugin_dir_url( __FILE__ );
 
-		// Load translations
-		load_plugin_textdomain( 'badgeos', false, 'badgeos/languages' );
-
 		// Setup our activation and deactivation hooks
 		register_activation_hook( __FILE__, array( $this, 'activate' ) );
 		register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
 
 		// Hook in all our important pieces
+		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 		add_action( 'plugins_loaded', array( $this, 'includes' ) );
 		add_action( 'init', array( $this, 'register_scripts_and_styles' ) );
 		add_action( 'init', array( $this, 'include_cmb' ), 999 );
@@ -62,6 +60,14 @@ class BadgeOS {
         //add action for adding ckeditor script
         add_action('wp_footer', array( $this, 'frontend_scripts' ));
 
+	}
+
+	/**
+	 * Load translations.
+	 */
+	function load_textdomain() {
+		// Load translations
+		load_plugin_textdomain( 'badgeos', false, basename( dirname( __FILE__ ) ) . '/languages' );
 	}
 
 	/**
