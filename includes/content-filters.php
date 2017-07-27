@@ -77,6 +77,8 @@ function badgeos_do_single_filters() {
 	badgeos_is_main_loop();
 	// enqueue our stylesheet
 	wp_enqueue_style( 'badgeos-single' );
+	// remember filter setting
+	$GLOBALS['badgeos_content_filter_wpautop'] = has_filter('the_content', 'wpautop');
 	// no worries.. we'll add back later
 	remove_filter( 'the_content', 'wpautop' );
 	// filter out the post title
@@ -118,8 +120,9 @@ function badgeos_reformat_entries( $content ) {
 	$badge_id = get_the_ID();
 
 	// filter, but only on the main loop!
-	if ( !badgeos_is_main_loop( $badge_id ) )
-		return wpautop( $content );
+	if ( !badgeos_is_main_loop( $badge_id ) ) {
+		return $GLOBALS['badgeos_content_filter_wpautop'] ? wpautop( $content ) : $content;
+	}
 
 	// now that we're where we want to be, tell the filters to stop removing
 	$GLOBALS['badgeos_reformat_content'] = true;
