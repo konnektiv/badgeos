@@ -789,9 +789,9 @@ function badgeos_get_current_page_post_id() {
  * @param $link
  * @return string
  */
-function badgeos_hide_next_hidden_achievement_link($link) {
+function badgeos_hide_next_hidden_achievement_link($link, $format, $permalink_format, $post) {
 
-	if($link) {
+	if( badgeos_is_achievement( $post ) && $link) {
 
 		//Get current achievement id
 		$achievement_id = badgeos_get_current_page_post_id();
@@ -804,7 +804,7 @@ function badgeos_hide_next_hidden_achievement_link($link) {
 	return $link;
 
 }
-add_filter('next_post_link', 'badgeos_hide_next_hidden_achievement_link');
+add_filter('next_post_link', 'badgeos_hide_next_hidden_achievement_link', 10, 4);
 
 /**
  * Hide the hidden achievement post link from previous post link
@@ -812,10 +812,10 @@ add_filter('next_post_link', 'badgeos_hide_next_hidden_achievement_link');
  * @param $link
  * @return string
  */
-function badgeos_hide_previous_hidden_achievement_link($link) {
+function badgeos_hide_previous_hidden_achievement_link($link, $format, $permalink_format, $post) {
 
 
-	if($link) {
+	if( badgeos_is_achievement( $post ) && $link) {
 
 		//Get current achievement id
 		$achievement_id = badgeos_get_current_page_post_id();
@@ -829,7 +829,7 @@ function badgeos_hide_previous_hidden_achievement_link($link) {
 
 }
 
-add_filter('previous_post_link', 'badgeos_hide_previous_hidden_achievement_link');
+add_filter('previous_post_link', 'badgeos_hide_previous_hidden_achievement_link', 10, 4);
 
 
 /*
