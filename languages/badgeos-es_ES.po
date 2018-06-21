@@ -1383,7 +1383,7 @@ msgstr "Credly constructor de  insignias "
 
 #: includes/meta-boxes.php:54
 msgid "To set a default image, use the <strong>Default Achievement Image</strong> metabox to the right. For best results, use a square .png file with a transparent background, at least 200x200 pixels. Or, design a badge using the %1$s."
-msgstr "Para establecer una imagen predeterminada, utiliza el <strong> la imagen por defecto de la insignia </strong> en la METABOX a la derecha. Para obtener los mejores resultados, utiliza un archivo .png cuadrado con un fondo transparente, al menos 200x200 píxeles. O bien, el diseño de una tarjeta de identificación con el 1%$s."
+msgstr "Para establecer una imagen predeterminada, utiliza el <strong> la imagen por defecto de la insignia </strong> en la METABOX a la derecha. Para obtener los mejores resultados, utiliza un archivo .png cuadrado con un fondo transparente, al menos 200x200 píxeles. O bien, el diseño de una tarjeta de identificación con el %1$s."
 
 #: includes/meta-boxes.php:52
 msgid "Default Badge Image"
