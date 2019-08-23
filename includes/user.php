@@ -43,6 +43,7 @@ function badgeos_get_user_achievements( $args = array() ) {
 	$table_name = $wpdb->prefix . 'badgeos_achievements';
 	if($wpdb->get_var("show tables like '$table_name'") == $table_name) {
 		$where = 'user_id = ' . $args['user_id'];
+		$join = '';
 	
 		if( isset( $args['entry_id'] ) && $args['entry_id'] != false ) {
 			$where .= ' AND entry_id = ' . $args['entry_id'];
@@ -88,7 +89,12 @@ function badgeos_get_user_achievements( $args = array() ) {
 			$where .= " AND date_earned <= '". $args['end_date']. "'";
 		}
 
-		$user_achievements = $wpdb->get_results( "SELECT * FROM $table_name WHERE $where" );
+		if( $args['display'] ) {
+		    $join = "JOIN $wpdb->postmeta ON ID = post_id AND meta_key = '_badgeos_hidden'";
+			$where .= " AND meta_value = 'show'";
+		}
+
+		$user_achievements = $wpdb->get_results( "SELECT * FROM $table_name $join WHERE $where" );
 
 		return $user_achievements;
 	} else {
